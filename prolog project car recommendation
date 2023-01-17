@@ -1,0 +1,168 @@
+/*car(model, make, type, price, manufacture year, safety rating, mileage)*/
+
+car('XUV700', 'Mahindra', 'SUV', 2030000, 2021, 3.5, 10).
+car('Scorpio-N 2.0', 'Mahindra', 'SUV', 1199000, 2022, 3.5, 14.5).
+car('XUV300', 'Mahindra', 'SUV', 1200000, 2019, 3.5, 13).
+car('Thar LX', 'Mahindra', 'SUV', 1602000, 2020, 3.5, 9.8).
+car('KUV100', 'Mahindra', 'SUV', 793000, 2016, 3.5, 18.7).
+
+car('Aura 1.2', 'Hyundai', 'Sedan', 730000, 2020, 2.4, 20).
+car('Santro Magna', 'Hyundai', 'Hatchback', 533000, 2021, 2.9, 20).
+car('Verna', 'Hyundai', 'Sedan', 1300000, 2018, 4.7, 17).
+car('Grand i10 nios', 'Hyundai', 'Hatchback', 530000, 2020, 3.4, 20.7).
+car('i20 1.0 turbo', 'Hyundai', 'Hatchback', 889000, 2022, 3.9, 19.5).
+
+car('Altroz', 'Tata', 'Hatchback', 872000, 2020, 4.1, 18).
+car('Tiago', 'Tata', 'Hatchback', 550000, 2021, 3.5, 20.7).
+car('Nexon', 'Tata', 'SUV', 1250000, 2021, 3.9, 18.2).
+car('Punch', 'Tata', 'Hatchback', 850000, 2022, 3.2, 21).
+car('Tigor', 'Tata', 'Sedan', 760000, 2021, 3.4, 22.2).
+
+car('Dzire', 'Suzuki', 'Sedan', 820000, 2016, 2.0, 24.3).
+car('Celerio', 'Suzuki', 'Hatchback', 420000, 2017, 2.3, 25).
+car('Ertiga', 'Suzuki', 'SUV', 1420000, 2019, 3.4, 12).
+car('Ciaz', 'Suzuki', 'Sedan', 1320000, 2018, 4.1, 17.3).
+car('Baleno', 'Suzuki', 'Hatchback', 720000, 2022, 3.5, 20).
+
+car('Urban Cruiser', 'Toyota', 'SUV', 880000, 2021, 2.8, 16.6).
+car('Fortuner', 'Toyota', 'SUV', 2420000, 2021, 4.5, 11.4).
+car('Innova', 'Toyota', 'SUV', 1620000, 2021, 3.8, 12.1).
+car('Camry', 'Toyota', 'Sedan', 4170000, 2021, 4.6, 23.3).
+car('Glanza', 'Toyota', 'Hatchback', 780000, 2022, 3.5, 20).
+
+car('Amaze', 'Honda', 'Sedan', 780000, 2019, 2.7, 21.4).
+car('City', 'Honda', 'Sedan', 1220000, 2020, 3.8, 18.6).
+car('WR-V', 'Honda', 'Hatchback', 740000, 2018, 3.6, 19).
+car('Jazz', 'Honda', 'Hatchback', 830000, 2017, 3.9, 20.4).
+car('Civic', 'Honda', 'Sedan', 1690000, 2020, 4.5, 15).
+
+car('Polo', 'Volkswagen', 'Hatchback', 805000, 2020, 4.7, 18).
+car('Vento', 'Volkswagen', 'Sedan', 1200000, 2018, 4.3, 15).
+
+
+/*FUNCTIONS*/
+
+carinfo(X):- car(X,_,_,_,_,_,_).
+
+car_with_make(Y,Make) 			:- car(Y,Make,_,_,_,_,_).
+
+car_type(Y,Type)				:- car(Y,_,Type,_,_,_,_).
+
+car_year(Y,O)					:- car(Y,_,_,_,X,_,_), X > 2020, O == 'newer'.
+car_year(Y,O)					:- car(Y,_,_,_,X,_,_), X > 2018, X < 2021, O == 'decent'.
+car_year(Y,O)					:- car(Y,_,_,_,X,_,_), X < 2019, O == 'older'.
+
+car_mileage(Y,O)				:- car(Y,_,_,_,_,_,X), X > 20.1, O == 'less'.
+car_mileage(Y,O)				:- car(Y,_,_,_,_,_,X), X < 20, O == 'more'.
+
+car_safety_rating(Y,O)			:- car(Y,_,_,_,_,X,_), X > 3.9, O == 'safest'.
+car_safety_rating(Y,O)			:- car(Y,_,_,_,_,X,_), X > 2.9, X < 4.0, O == 'safe'.
+car_safety_rating(Y,O)			:- car(Y,_,_,_,_,X,_), X < 3, O == 'normal'.
+
+car_price(Y,Price)				:- car(Y,_,_,X,_,_,_), X < Price.
+
+/* car(model, make, type, price, manufacture year, safety rating, mileage)  */
+
+carrec(Y,Make,Type,Price,O1,O2,O3)		:- test(Y,Make,Type,Price,O1,O2,O3).
+carrec(Y,Make,Type,Price,O1,O2,O3)		:- test(Y,Type,Price,O1,O2,O3).
+carrec(Y,Make,Type,Price,O1,O2,O3).
+
+test(Y,Make,Type,Price,O1,O2,O3) 		:- car_year(Y,O1), car_safety_rating(Y,O2), car_mileage(Y,O3), car_with_make(Y,Make), car_type(Y,Type), car_price(Y,Price), !.
+test(Y,Type,Price,O1,O2,O3) 			:- car_year(Y,O1), car_safety_rating(Y,O2), car_mileage(Y,O3), car_type(Y,Type), car_price(Y,Price), !.
+
+
+
+start:-	
+
+                write('Expert System - Gasoline car reccomendation'),nl,
+                write('Please answer questions below'),nl,nl,
+
+/*STARTING QUESTIONS*/
+
+               	write('What is your name? '),
+               	read(Name),nl,
+               	write('Hello '),
+				write(Name),write('!'),nl,
+	
+	
+
+/* QUESTION - BUDGET */
+                           
+                write('How much is your budget?'),nl,
+                read(Price),nl,
+                                                    
+/* QUESTION - YEAR PRODUCTION */
+
+				write('Do you want an old car?'),nl,
+				write('1. Yes'),nl,
+				write('2. No'),nl,
+				read(A1),nl,
+				(  A1 == 'no' ->
+				    write('Something new?'),nl,
+				    write('1. Yes'),nl,
+					write('2. No'),nl,
+					read(A2),nl,
+					(A2 == 'no' -> Ans4 = 'decent' ; Ans4 = 'newer')
+					;
+				    Ans4 = 'older'
+				),
+
+/* QUESTION - SAFETY RATING */
+       
+				write('   Do you need the car to drive inside city?'),nl,
+				write('1. Yes'),nl,
+				write('2. No'),nl,
+				read(A3),nl,
+				(  A3 == 'no' ->
+				    write('Are you a professional/expert driver?'),nl,
+				    write('1. Yes'),nl,
+					write('2. No'),nl,
+					read(A4),nl,
+					(A4 == 'no' -> Ans5 = 'safest' ; Ans5 = 'safe')
+					;
+				    Ans5 = 'normal'
+				),
+
+
+/* QUESTION - CAR TYPE */
+
+				write('   What type of car do you prefer?'),nl,
+				write('1. Sedan'),nl,
+				write('2. Hatchback'),nl,
+				write('3. SUV'),nl,
+				read(Ans2),nl,
+
+
+/* QUESTION - MILEAGE */
+
+				   
+				write('Do you want a powerful car?'),nl,
+				write('1. Yes'),nl,
+				write('2. No'),nl,
+				read(A5),nl,
+    			(   A5 == 'Yes' ->  Ans6 = 'less'; Ans6 = 'more'),
+					
+
+
+/* QUESTION - MAKE*/
+
+				write('Which car company is preferable?'),nl,
+				write('1. Mahindra'),nl,
+				write('2. Suzuki'),nl,
+                write('3. Toyota'),nl,
+                write('4. Hyundai'),nl,
+                write('5. Honda'),nl,
+                write('6. Tata'),nl,
+    			write('7. Volkswagen'),nl,
+                write('8. Any'),nl,
+				read(A6),nl,
+				(  A6 == 'Any' -> Ans1 = ''; Ans1 = A6),
+
+
+
+
+/*car(model, make, type, price, manufacture year, safety rating, mileage) */
+
+                carrec(X,Ans1,Ans2,Price,Ans4,Ans5,Ans6),
+				write('You should buy this car:'),nl,
+			    write(X).
